@@ -12,3 +12,4 @@
 */
 
 Route::get('/', '\Domain\Admin\Users\Http\UsersController@index');
+Route::get('/item/{id}', '\Domain\Admin\Users\Http\UsersController@viewItem');

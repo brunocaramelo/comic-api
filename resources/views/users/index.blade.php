@@ -19,7 +19,7 @@
                         <tbody>
                     @forelse ($users as $item)
                             <tr>
-                                <td><a href="{{ url('/users/new') }}" class="btn btn-primary">{{ $item->id }}</a></td>
+                                <td><a href="{{ url('/item') }}/{{ $item->id }}" class="btn btn-primary">{{ $item->id }}</a></td>
                                 <td>{{ $item->name }}</td>
                                 <td><img src="{{ $item->thumbnail->path }}.{{ $item->thumbnail->extension }}" ></td>
                                 <td>{{ $item->description }}</td>

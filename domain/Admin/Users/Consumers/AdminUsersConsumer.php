@@ -32,5 +32,19 @@ class AdminUsersConsumer
                                         );
         return  json_decode( $requestApi->send() );
     }
+    public function showItem( $id )
+    {
+        $queryString = [ 'ts' => time(),
+                        'apikey' => $this->apiPubKey,
+                        'hash' => md5( time() . $this->apiPrivKey . $this->apiPubKey ),
+                        ];
+        $requestApi = new RequestBuilder( $this->baseUrl.'characters/'.$id ,
+                                            "GET" , 
+                                            [ ],  
+                                            [ ],
+                                            $queryString
+                                        );
+        return  json_decode( $requestApi->send() );
+    }
 
 }

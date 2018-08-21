@@ -1,46 +1,53 @@
 @extends('layouts.app')
 @section('content')
 <div class="col-md-8 col-md-offset-2">
-    <div class="row">
+<div class="row">
             <div class="panel panel-default">
-                <div class="panel-heading">Editar Acesso</div>
+                <div class="panel-heading">Detalhes</div>
                 <div class="panel-body">
-                    {!! Form::open([ 'id' => 'form-principal' , 'method' => 'post' ]) !!}
-                        {!! Form::hidden( 'id' , $user->id , [ 'class' => 'form-control' ]) !!}
-                        {{ Form::label('form_name', 'Nome:', ['class' => 'margin-top-10px control-label']) }}
-                        {!! Form::text( 'name' , $user->name , [ 'class' => 'form-control' ,'id' => 'form_name' ]) !!}
-                        {{ Form::label('form_last_name', 'Sobrenome:', ['class' => 'margin-top-10px control-label']) }}
-                        {!! Form::text( 'last_name' , $user->last_name , [ 'class' => 'form-control' ,'id' => 'form_last_name' ]) !!}
-                        {{ Form::label('form_email', 'E-mail:', ['class' => 'margin-top-10px control-label']) }}
-                        {!! Form::text( 'email' , $user->email , [ 'class' => 'margin-bottom-20px form-control' ,'id' => 'form_email' ]) !!}
-                    {!! Form::close() !!}
-                    <button type="submit" class="btn btn-primary margin-right-20px" onclick='sendForm()'>Salvar</button>
-                    <a href='{{ url("users") }}' class="btn btn-primary">Voltar</a>
-            </div>
+                <form action="{{url('users/')}}">
+                    <table class="table">   
+                        <thead>
+                            <tr>
+                                <td>Id</td>
+                                <td>Nome</td>
+                                <td>Thumbnail</td>
+                                <td>Descricao</td>
+                                <td>Comics</td>
+                            </tr>
+                            
+                        </thead>
+                        <tbody>
+                    @forelse ($users as $item)
+                            <tr>
+                                <td>{{ $item->id }}</td>
+                                <td>{{ $item->name }}</td>
+                                <td><img src="{{ $item->thumbnail->path }}.{{ $item->thumbnail->extension }}" ></td>
+                                <td>{{ $item->description }}</td>
+                                <td>
+                                    <ul>
+                                    @forelse ($item->comics->items as $comic)
+                                        <li><a href="{{ $comic->resourceURI }}">{{ $comic->resourceURI }}</a></li>
+                                        <li>{{ $comic->name }}</li>
+                                    @empty
+                                        <li>Nenhum dado Encontrado</li>
+                                    @endforelse
+                                    </ul>
+                                </td>
+                            </tr>
+                        @empty
+                            <td>Nenhum dado Encontrado</td>
+                        @endforelse
+                        </tbody>
+                    </table>
+                    
+                </form>
+               
+                <br />
+                 </div>
         </div>
     </div>
-</div>
-
-<script>
- 
-    function sendForm(){
-        $.ajax({
-                type: "POST",
-                url: "{{ url('users/edit') }}",
-                data: $('#form-principal').serialize(),
-                dataType: "json",
-                success: function(response)
-                {
-                    successDialog( 300 , 220 , response.message , 'windowLocation("{{ url("users") }}")' )
-                },
-                error: function(jqXHR, textStatus, errorThrown){
-                   returnErr = JSON.parse(jqXHR.responseText)
-                   messageError = str_replace_recursive( "\n",'<br />',returnErr.message)
-                   errorDialog( 410 , 300 , messageError )
-                }
-        });
-    }
-
-</script>
+    <a href='{{ url("/") }}' class="btn btn-primary">Voltar</a>
+    </div>
 
 @endsection

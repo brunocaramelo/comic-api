@@ -20,4 +20,12 @@ class UsersController extends Controller
         return view( 'users.index' , [ 'users' => $list->data->results ] );
     }
 
+    public function viewItem( Request $request ) 
+    {
+        $user = new AdminUsersConsumer();
+        $list = $user->showItem( $request->id );
+        // dd($list);
+        return view( 'users.edit' , [ 'users' => $list->data->results ] );
+    }
+
 }
